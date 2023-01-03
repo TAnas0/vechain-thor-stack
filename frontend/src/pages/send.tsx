@@ -10,12 +10,49 @@ const Send = () => {
   const [mnemonicWords, setMnemonicWords] = useState("");
   const [response, setResponse] = useState({});
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`http://3.66.229.111:8080/send/${to}`, {
+        method: "POST",
+        body: JSON.stringify({
+          // to,
+          amount,
+          data,
+          from,
+          auth: {
+            privateKey,
+            mnemonicWords,
+          },
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      const resJson = await res.json();
+      setResponse(resJson);
+      if (res.status === 200) {
+        setTo("");
+        setAmount("");
+        setData("");
+        setFrom("");
+        setPrivateKey("");
+        setMnemonicWords("");
+      } else {
+        console.error(res)
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    return e;
+  };
 
   return (
     <Main meta="">
       <form
         action=""
         className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-md"
+        onSubmit={handleSubmit}
       >
         <label
           htmlFor=""
