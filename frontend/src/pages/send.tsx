@@ -1,45 +1,49 @@
-import { useState } from "react";
-import { Main } from "@/templates/Main";
+import { useState } from 'react';
+
+import { Main } from '@/templates/Main';
 
 const Send = () => {
-  const [to, setTo] = useState("");
-  const [amount, setAmount] = useState("");
-  const [data, setData] = useState("");
-  const [from, setFrom] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
-  const [mnemonicWords, setMnemonicWords] = useState("");
+  const [to, setTo] = useState('');
+  const [amount, setAmount] = useState('');
+  const [data, setData] = useState('');
+  const [from, setFrom] = useState('');
+  const [privateKey, setPrivateKey] = useState('');
+  const [mnemonicWords, setMnemonicWords] = useState('');
   const [response, setResponse] = useState({});
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://${process.env.NEXT_PUBLIC_THOR_ENDPOINT}:${process.env.NEXT_PUBLIC_THOR_PORT}/send/${to}`, {
-        method: "POST",
-        body: JSON.stringify({
-          // to,
-          amount,
-          data,
-          from,
-          auth: {
-            privateKey,
-            mnemonicWords: mnemonicWords.split(","),
+      const res = await fetch(
+        `http://${process.env.NEXT_PUBLIC_THOR_ENDPOINT}:${process.env.NEXT_PUBLIC_THOR_PORT}/send/${to}`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            // to,
+            amount,
+            data,
+            from,
+            auth: {
+              privateKey,
+              mnemonicWords: mnemonicWords.split(','),
+            },
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
           },
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
+        }
+      );
       const resJson = await res.json();
       setResponse(resJson);
       if (res.status === 200) {
-        setTo("");
-        setAmount("");
-        setData("");
-        setFrom("");
-        setPrivateKey("");
-        setMnemonicWords("");
+        setTo('');
+        setAmount('');
+        setData('');
+        setFrom('');
+        setPrivateKey('');
+        setMnemonicWords('');
       } else {
-        console.error(res)
+        console.error(res);
       }
     } catch (err) {
       console.log(err);
@@ -134,8 +138,10 @@ const Send = () => {
         </label>
         <button type="submit">Send</button>
       </form>
-      <div>Response:<br></br> 
-      {JSON.stringify(response)}</div>
+      <div>
+        Response:<br></br>
+        {JSON.stringify(response)}
+      </div>
     </Main>
   );
 };

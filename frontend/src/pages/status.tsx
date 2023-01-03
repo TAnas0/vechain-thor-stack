@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
-import { Main } from "@/templates/Main";
+import { useEffect, useState } from 'react';
+
+import { Main } from '@/templates/Main';
 
 const getNodeStatus = async () => {
-  const resp = await fetch(`http://${process.env.NEXT_PUBLIC_THOR_ENDPOINT}:${process.env.NEXT_PUBLIC_THOR_PORT}/status`);
+  const resp = await fetch(
+    `http://${process.env.NEXT_PUBLIC_THOR_ENDPOINT}:${process.env.NEXT_PUBLIC_THOR_PORT}/status`
+  );
   return resp.json();
 };
 
