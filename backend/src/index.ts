@@ -1,5 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import { thorify } from "thorify";
+const Web3 = require("web3"); // Recommend using require() instead of import here
 import bodyParser from "body-parser";
 
 dotenv.config();
@@ -12,6 +14,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const port = process.env.PORT || 8080;
+const { THOR_ENDPOINT, THOR_PORT } = process.env;
+const web3 = thorify(new Web3(), `http://${THOR_ENDPOINT}:${THOR_PORT}`);
 // TODO Middleware for "authentication"
 
 app.get("/", (req: Request, res: Response) => {
@@ -19,26 +23,23 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.get("/status", async (req: Request, res: Response) => {
-  // TODO Get best/finalized block details
-  // TODO Ping other testnet servers and get their details
   // TODO determine if synced or not
   // TODO Estimate how long till sync
-  let resp = await axios.get(`http://${THOR_ENDPOINT}:${THOR_PORT}/blocks/best`)
-  const bestBlock = resp.data
-  resp = await axios.get(`http://${THOR_ENDPOINT}:${THOR_PORT}/blocks/finalized`)
-  const finalizedBlock = resp.data
+  const bestBlock = await web3.eth.getBlock("latest");
+  const finalizedBlock = await web3.eth.getBlock("finalized");
 
-  resp = await axios.get("https://testnet.veblocks.net/blocks/best")
-  const remoteBestBlock = resp.data
-  resp = await axios.get("https://testnet.veblocks.net/blocks/finalized")
-  const remoteFinalizedBlock = resp.data
+  // Get status of remote Thor testnet nodes
+  const veblocksWeb3 = thorify(new Web3(), `https://testnet.veblocks.net`);
+  const veblocksBestBlock = await veblocksWeb3.eth.getBlock("latest");
+  const veblocksFinalizedBlock = await veblocksWeb3.eth.getBlock("finalized");
 
   res.send({
     bestBlock,
     finalizedBlock,
-    remoteBestBlock,
-    remoteFinalizedBlock,
+    veblocksBestBlock,
+    veblocksFinalizedBlock,
   });
+});
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
