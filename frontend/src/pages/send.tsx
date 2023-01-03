@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Main } from "@/templates/Main";
+import { Main } from '@/templates/Main';
 
 const Send = () => {
-  const [to, setTo] = useState("");
-  const [amount, setAmount] = useState("");
-  const [data, setData] = useState("");
-  const [from, setFrom] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
-  const [mnemonicWords, setMnemonicWords] = useState("");
+  const [to, setTo] = useState('');
+  const [amount, setAmount] = useState('');
+  const [data, setData] = useState('');
+  const [from, setFrom] = useState('');
+  const [privateKey, setPrivateKey] = useState('');
+  const [mnemonicWords, setMnemonicWords] = useState('');
   const [response, setResponse] = useState({});
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -17,7 +17,7 @@ const Send = () => {
       const res = await fetch(
         `http://${process.env.NEXT_PUBLIC_THOR_ENDPOINT}:${process.env.NEXT_PUBLIC_THOR_PORT}/send/${to}`,
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({
             // to,
             amount,
@@ -25,23 +25,23 @@ const Send = () => {
             from,
             auth: {
               privateKey,
-              mnemonicWords: mnemonicWords.split(","),
+              mnemonicWords: mnemonicWords.split(','),
             },
           }),
           headers: {
-            "Content-type": "application/json; charset=UTF-8",
+            'Content-type': 'application/json; charset=UTF-8',
           },
         }
       );
       const resJson = await res.json();
       setResponse(resJson);
       if (res.status === 200) {
-        setTo("");
-        setAmount("");
-        setData("");
-        setFrom("");
-        setPrivateKey("");
-        setMnemonicWords("");
+        setTo('');
+        setAmount('');
+        setData('');
+        setFrom('');
+        setPrivateKey('');
+        setMnemonicWords('');
       } else {
         console.error(res);
       }
@@ -61,7 +61,7 @@ const Send = () => {
       >
         <label
           htmlFor=""
-          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
+          className="mb-2 block pt-6 text-sm font-bold text-gray-700"
         >
           To:
         </label>
@@ -70,11 +70,11 @@ const Send = () => {
           name="to"
           value={to}
           onChange={(e) => setTo(e.target.value)}
-          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+          className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
         />
         <label
           htmlFor=""
-          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
+          className="mb-2 block pt-6 text-sm font-bold text-gray-700"
         >
           Amount:
         </label>
@@ -83,11 +83,11 @@ const Send = () => {
           value={amount}
           name="amount"
           onChange={(e) => setAmount(e.target.value)}
-          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+          className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
         />
         <label
           htmlFor=""
-          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
+          className="mb-2 block pt-6 text-sm font-bold text-gray-700"
         >
           Data:
         </label>
@@ -96,11 +96,11 @@ const Send = () => {
           name="data"
           value={data}
           onChange={(e) => setData(e.target.value)}
-          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+          className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
         />
         <label
           htmlFor=""
-          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
+          className="mb-2 block pt-6 text-sm font-bold text-gray-700"
         >
           From:
         </label>
@@ -109,11 +109,11 @@ const Send = () => {
           name="from"
           value={from}
           onChange={(e) => setFrom(e.target.value)}
-          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+          className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
         />
         <label
           htmlFor=""
-          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
+          className="mb-2 block pt-6 text-sm font-bold text-gray-700"
         >
           Private Key:
         </label>
@@ -122,11 +122,11 @@ const Send = () => {
           type="password"
           value={privateKey}
           onChange={(e) => setPrivateKey(e.target.value)}
-          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+          className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
         />
         <label
           htmlFor=""
-          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
+          className="mb-2 block pt-6 text-sm font-bold text-gray-700"
         >
           Mnemonic Words (comma separated):
         </label>
@@ -135,9 +135,14 @@ const Send = () => {
           name="mnemonicWords"
           value={mnemonicWords}
           onChange={(e) => setMnemonicWords(e.target.value)}
-          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+          className="focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
         />
-        <button type="submit" className="text-white bg-blue-600 rounded-lg w-1/6 mt-6">Send</button>
+        <button
+          type="submit"
+          className="mt-6 w-1/6 rounded-lg bg-blue-600 text-white"
+        >
+          Send
+        </button>
       </form>
       <div>
         Response:<br></br>
