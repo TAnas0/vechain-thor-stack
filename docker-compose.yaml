@@ -11,3 +11,8 @@ services:
   node:
     image: vechain/thor
     entrypoint: ["thor", "--network", "test", "--api-addr", "0.0.0.0:8669"]
+    volumes:
+      - data/.org.vechain.thor:/root/.org.vechain.thor
+
+volumes:
+  data:
