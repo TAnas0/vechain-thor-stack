@@ -99,6 +99,11 @@ app.post("/send/:to", async (req: Request, res: Response) => {
   }
 });
 
+app.post("/mnemonictokey", async (req, resp) => {
+  const privateKey: Buffer = mnemonic.derivePrivateKey(req.body.words);
+  resp.send(privateKey.toString("hex"));
+});
+
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
