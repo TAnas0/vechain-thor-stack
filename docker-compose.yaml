@@ -7,3 +7,7 @@ services:
       - 8080:8080
     networks:
       - local-thor
+
+  node:
+    image: vechain/thor
+    entrypoint: ["thor", "--network", "test", "--api-addr", "0.0.0.0:8669"]
