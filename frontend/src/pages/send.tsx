@@ -10,10 +10,10 @@ const Send = () => {
   const [mnemonicWords, setMnemonicWords] = useState("");
   const [response, setResponse] = useState({});
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://3.66.229.111:8080/send/${to}`, {
+      const res = await fetch(`http://${process.env.NEXT_PUBLIC_THOR_ENDPOINT}:${process.env.NEXT_PUBLIC_THOR_PORT}/send/${to}`, {
         method: "POST",
         body: JSON.stringify({
           // to,
