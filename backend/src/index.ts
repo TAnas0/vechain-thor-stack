@@ -18,8 +18,10 @@ app.use(cors());
 
 const port = process.env.PORT || 8080;
 const { THOR_ENDPOINT, THOR_PORT } = process.env;
-const web3 = thorify(new Web3(), `http://${THOR_ENDPOINT}:${THOR_PORT}`);
-
+let web3 = thorify(new Web3(), `http://${THOR_ENDPOINT}:${THOR_PORT}`);
+const externalWeb3 = thorify(new Web3(), `https://testnet.veblocks.net`);
+// const externalWeb3 = thorify(new Web3(), `http://3.66.229.111:8669`);
+web3 = externalWeb3
 // Middleware for wallets authentication
 app.use("/send/:to", (req, res, next) => {
   const { auth } = req.body;
@@ -37,12 +39,12 @@ app.use("/send/:to", (req, res, next) => {
         next();
       } else {
         res.status(404).json({
-          error: "Provide mnemonic words as an array"
+          error: "Provide mnemonic words as an array",
         });
       }
     } else {
       res.status(403).json({
-        error: "Authentication details not provided"
+        error: "Authentication details not provided",
       });
     }
   } catch (e) {
@@ -86,16 +88,16 @@ app.post("/send/:to", async (req: Request, res: Response) => {
       from,
       to,
       value,
-      data: Buffer.from(data, 'utf8').toString('hex'),
+      data: Buffer.from(data, "utf8").toString("hex"),
     });
     console.log(resp);
-    res.send(resp)
+    res.send(resp);
   } catch (error) {
     console.log("Error while making transaction");
     console.error(error);
     res.status(400).send({
       error: "Error while making transaction",
-    })
+    });
   }
 });
 
