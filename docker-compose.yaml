@@ -11,6 +11,11 @@ services:
       - THOR_ENDPOINT=node
       - THOR_PORT=8669
 
+  frontend:
+    build: frontend/
+    ports:
+      - 3000:3000
+
   node:
     image: vechain/thor
     entrypoint: ["thor", "--network", "test", "--api-addr", "0.0.0.0:8669"]
