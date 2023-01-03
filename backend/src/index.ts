@@ -4,6 +4,7 @@ import { thorify } from "thorify";
 const Web3 = require("web3"); // Recommend using require() instead of import here
 import bodyParser from "body-parser";
 import { mnemonic } from "thor-devkit";
+import cors from "cors";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const app: Express = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+app.use(cors());
 
 const port = process.env.PORT || 8080;
 const { THOR_ENDPOINT, THOR_PORT } = process.env;
