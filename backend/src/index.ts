@@ -23,15 +23,17 @@ const web3 = thorify(new Web3(), `http://${THOR_ENDPOINT}:${THOR_PORT}`);
 // Middleware for wallets authentication
 app.use("/send/:to", (req, res, next) => {
   const { auth } = req.body;
-  const authKeys = Object.keys(auth);
   try {
+    const authKeys = Object.keys(auth);
     if (authKeys.includes("privateKey")) {
       web3.eth.accounts.wallet.add(auth.privateKey);
       next();
     } else if (authKeys.includes("mnemonicWords")) {
-      if (auth.mnemonicWords.isArray()) {
-        const privateKey: Buffer = mnemonic.derivePrivateKey(auth.mnemonicWords);
-        web3.eth.accounts.wallet.add(privateKey);
+      if (Array.isArray(auth.mnemonicWords)) {
+        const privateKey: Buffer = mnemonic.derivePrivateKey(
+          auth.mnemonicWords
+        );
+        web3.eth.accounts.wallet.add(privateKey.toString("hex"));
         next();
       } else {
         res.status(404).json({
