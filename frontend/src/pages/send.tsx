@@ -22,7 +22,7 @@ const Send = () => {
           from,
           auth: {
             privateKey,
-            mnemonicWords,
+            mnemonicWords: mnemonicWords.split(","),
           },
         }),
         headers: {
@@ -123,7 +123,7 @@ const Send = () => {
           htmlFor=""
           className="mb-2 block text-sm font-bold text-gray-700"
         >
-          Mnemonic Words:
+          Mnemonic Words (comma separated):
           <input
             type="text"
             name="mnemonicWords"
@@ -132,9 +132,10 @@ const Send = () => {
             className="focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
           />
         </label>
-        <button type="submit">Create</button>
+        <button type="submit">Send</button>
       </form>
-      <div>{JSON.stringify(response)}</div>
+      <div>Response:<br></br> 
+      {JSON.stringify(response)}</div>
     </Main>
   );
 };
