@@ -7,14 +7,21 @@ services:
       - 8080:8080
     networks:
       - local-thor
+    environment:
+      - THOR_ENDPOINT=node
+      - THOR_PORT=8669
 
   node:
     image: vechain/thor
     entrypoint: ["thor", "--network", "test", "--api-addr", "0.0.0.0:8669"]
     volumes:
-      - data/.org.vechain.thor:/root/.org.vechain.thor
+      - ./data:/root/.org.vechain.thor
     networks:
       - local-thor
+    # ports:
+    #   - 8669:8669
+    #   - 11235:11235
+    #   - 11235:11235/udp
     restart: always
     deploy:
       resources:
@@ -25,6 +32,3 @@ services:
 networks:
   local-thor:
     driver: bridge
-
-volumes:
-  data:
