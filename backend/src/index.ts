@@ -40,6 +40,30 @@ app.get("/status", async (req: Request, res: Response) => {
     veblocksFinalizedBlock,
   });
 });
+
+app.post("/send/:to", async (req: Request, res: Response) => {
+  // TODO Respond with details about the transaction
+  const { value, data, from } = req.body;
+  const { to } = req.params;
+
+  try {
+    const resp = await web3.eth.sendTransaction({
+      from,
+      to,
+      value,
+      data: Buffer.from(data, 'utf8').toString('hex'),
+    });
+    console.log(resp);
+    res.send(resp)
+  } catch (error) {
+    console.log("Error while making transaction");
+    console.error(error);
+    res.status(400).send({
+      error: "Error while making transaction",
+    })
+  }
+});
+
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
