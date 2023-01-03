@@ -15,6 +15,12 @@ services:
       - data/.org.vechain.thor:/root/.org.vechain.thor
     networks:
       - local-thor
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "1.25"
+          memory: 3gb
 
 networks:
   local-thor:
