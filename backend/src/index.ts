@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { thorify } from "thorify";
 const Web3 = require("web3"); // Recommend using require() instead of import here
 import bodyParser from "body-parser";
+import { mnemonic } from "thor-devkit";
 
 dotenv.config();
 
@@ -16,7 +17,37 @@ app.use(bodyParser.json());
 const port = process.env.PORT || 8080;
 const { THOR_ENDPOINT, THOR_PORT } = process.env;
 const web3 = thorify(new Web3(), `http://${THOR_ENDPOINT}:${THOR_PORT}`);
-// TODO Middleware for "authentication"
+
+// Middleware for wallets authentication
+app.use("/send/:to", (req, res, next) => {
+  const { auth } = req.body;
+  const authKeys = Object.keys(auth);
+  try {
+    if (authKeys.includes("privateKey")) {
+      web3.eth.accounts.wallet.add(auth.privateKey);
+      next();
+    } else if (authKeys.includes("mnemonicWords")) {
+      if (auth.mnemonicWords.isArray()) {
+        const privateKey: Buffer = mnemonic.derivePrivateKey(auth.mnemonicWords);
+        web3.eth.accounts.wallet.add(privateKey);
+        next();
+      } else {
+        res.status(404).json({
+          error: "Provide mnemonic words as an array"
+        });
+      }
+    } else {
+      res.status(403).json({
+        error: "Authentication details not provided"
+      });
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(401).json({
+      error: "Unexpected error in middleware",
+    });
+  }
+});
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Server working");
