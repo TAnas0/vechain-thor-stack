@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { Main } from '@/templates/Main';
+import { Main } from "@/templates/Main";
 
 const Send = () => {
-  const [to, setTo] = useState('');
-  const [amount, setAmount] = useState('');
-  const [data, setData] = useState('');
-  const [from, setFrom] = useState('');
-  const [privateKey, setPrivateKey] = useState('');
-  const [mnemonicWords, setMnemonicWords] = useState('');
+  const [to, setTo] = useState("");
+  const [amount, setAmount] = useState("");
+  const [data, setData] = useState("");
+  const [from, setFrom] = useState("");
+  const [privateKey, setPrivateKey] = useState("");
+  const [mnemonicWords, setMnemonicWords] = useState("");
   const [response, setResponse] = useState({});
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -17,7 +17,7 @@ const Send = () => {
       const res = await fetch(
         `http://${process.env.NEXT_PUBLIC_THOR_ENDPOINT}:${process.env.NEXT_PUBLIC_THOR_PORT}/send/${to}`,
         {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify({
             // to,
             amount,
@@ -25,23 +25,23 @@ const Send = () => {
             from,
             auth: {
               privateKey,
-              mnemonicWords: mnemonicWords.split(','),
+              mnemonicWords: mnemonicWords.split(","),
             },
           }),
           headers: {
-            'Content-type': 'application/json; charset=UTF-8',
+            "Content-type": "application/json; charset=UTF-8",
           },
         }
       );
       const resJson = await res.json();
       setResponse(resJson);
       if (res.status === 200) {
-        setTo('');
-        setAmount('');
-        setData('');
-        setFrom('');
-        setPrivateKey('');
-        setMnemonicWords('');
+        setTo("");
+        setAmount("");
+        setData("");
+        setFrom("");
+        setPrivateKey("");
+        setMnemonicWords("");
       } else {
         console.error(res);
       }
@@ -53,6 +53,7 @@ const Send = () => {
 
   return (
     <Main meta="">
+      <h2>Send VET</h2>
       <form
         action=""
         className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-md"
@@ -60,83 +61,83 @@ const Send = () => {
       >
         <label
           htmlFor=""
-          className="mb-2 block text-sm font-bold text-gray-700"
+          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
         >
           To:
-          <input
-            type="text"
-            name="to"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
-            className="focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-          />
         </label>
+        <input
+          type="text"
+          name="to"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+        />
         <label
           htmlFor=""
-          className="mb-2 block text-sm font-bold text-gray-700"
+          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
         >
           Amount:
-          <input
-            type="text"
-            value={amount}
-            name="amount"
-            onChange={(e) => setAmount(e.target.value)}
-            className="focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-          />
         </label>
+        <input
+          type="text"
+          value={amount}
+          name="amount"
+          onChange={(e) => setAmount(e.target.value)}
+          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+        />
         <label
           htmlFor=""
-          className="mb-2 block text-sm font-bold text-gray-700"
+          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
         >
           Data:
-          <input
-            type="text"
-            name="data"
-            value={data}
-            onChange={(e) => setData(e.target.value)}
-            className="focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-          />
         </label>
+        <input
+          type="text"
+          name="data"
+          value={data}
+          onChange={(e) => setData(e.target.value)}
+          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+        />
         <label
           htmlFor=""
-          className="mb-2 block text-sm font-bold text-gray-700"
+          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
         >
           From:
-          <input
-            type="text"
-            name="from"
-            value={from}
-            onChange={(e) => setFrom(e.target.value)}
-            className="focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-          />
         </label>
+        <input
+          type="text"
+          name="from"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+        />
         <label
           htmlFor=""
-          className="mb-2 block text-sm font-bold text-gray-700"
+          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
         >
           Private Key:
-          <input
-            name="privateKey"
-            type="password"
-            value={privateKey}
-            onChange={(e) => setPrivateKey(e.target.value)}
-            className="focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-          />
         </label>
+        <input
+          name="privateKey"
+          type="password"
+          value={privateKey}
+          onChange={(e) => setPrivateKey(e.target.value)}
+          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+        />
         <label
           htmlFor=""
-          className="mb-2 block text-sm font-bold text-gray-700"
+          className="mb-2 pt-6 block text-sm font-bold text-gray-700"
         >
           Mnemonic Words (comma separated):
-          <input
-            type="text"
-            name="mnemonicWords"
-            value={mnemonicWords}
-            onChange={(e) => setMnemonicWords(e.target.value)}
-            className="focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-          />
         </label>
-        <button type="submit">Send</button>
+        <input
+          type="text"
+          name="mnemonicWords"
+          value={mnemonicWords}
+          onChange={(e) => setMnemonicWords(e.target.value)}
+          className="w-full focus:shadow-outline appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+        />
+        <button type="submit" className="text-white bg-blue-600 rounded-lg w-1/6 mt-6">Send</button>
       </form>
       <div>
         Response:<br></br>
