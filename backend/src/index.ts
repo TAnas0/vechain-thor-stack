@@ -1,10 +1,16 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import axios from "axios";
+import bodyParser from "body-parser";
 
 dotenv.config();
 
 const app: Express = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
+
 const port = process.env.PORT || 8080;
 // TODO Middleware for "authentication"
 
