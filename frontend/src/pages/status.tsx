@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { Main } from "@/templates/Main";
+import { Main } from '@/templates/Main';
 
 const getNodeStatus = async () => {
   const resp = await fetch(
@@ -19,18 +19,18 @@ const Status = () => {
 
   useEffect(() => {
     getNodeStatus()
-    .then((resp) => {
-      setStatus(resp);
-      console.log(resp);
-    })
-    .catch(console.error);
-    const periodicTask = setInterval(() => {
-      getNodeStatus()
       .then((resp) => {
         setStatus(resp);
         console.log(resp);
       })
       .catch(console.error);
+    const periodicTask = setInterval(() => {
+      getNodeStatus()
+        .then((resp) => {
+          setStatus(resp);
+          console.log(resp);
+        })
+        .catch(console.error);
     }, 1000);
     return () => clearInterval(periodicTask);
   }, []);
@@ -45,8 +45,8 @@ const Status = () => {
       <br />
       VeBlocks finalized block: {status.veblocksFinalizedBlock.number}
       <br />
-
-      Remaining blocks so far: {status.veblocksBestBlock.number - status.bestBlock.number}
+      Remaining blocks so far:{' '}
+      {status.veblocksBestBlock.number - status.bestBlock.number}
       <br />
       <br />
       <br />
