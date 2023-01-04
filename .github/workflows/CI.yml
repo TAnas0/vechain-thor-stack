@@ -16,12 +16,13 @@ jobs:
         working-directory: ./frontend
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: "frontend"
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          path: frontend
       - run: npm ci
       - run: npm run build
 
@@ -36,11 +37,12 @@ jobs:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: "backend"
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          path: "backend"
       - run: npm ci
       - run: npm run build
