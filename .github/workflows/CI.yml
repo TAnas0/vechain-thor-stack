@@ -35,6 +35,7 @@ jobs:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v3
+      - run: cd backend
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
