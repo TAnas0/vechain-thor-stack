@@ -6,7 +6,18 @@ This a dockerized setup for the following:
 2. Backend (ExpressJS/TypeScript)
 3. Frontend (NextJS/TypeScript/TailwindCSS)
 
-You can launch them all with a single command:
+## Requirements
+
+- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
+- [Node](https://nodejs.org/en/) v16+ & NPM: for running the frontend and backend locally
+
+## Recommended hardware
+
+We recommend the following hardware specifications:
+
+- AWS EC2 `t2.medium`: 2vCPUs and 4GB of RAM
+- 70 GB of disk space (50 GB is needed for the Vechain Testnet blockchain data)
+
 
 ```bash
 docker-compose up -d
