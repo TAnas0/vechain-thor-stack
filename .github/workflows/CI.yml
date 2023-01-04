@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+          path: frontend
       - run: npm ci
       - run: npm run build
 
@@ -40,5 +41,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+          path: "backend"
       - run: npm ci
       - run: npm run build
