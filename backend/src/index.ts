@@ -21,7 +21,7 @@ const { THOR_ENDPOINT, THOR_PORT } = process.env;
 let web3 = thorify(new Web3(), `http://${THOR_ENDPOINT}:${THOR_PORT}`);
 const externalWeb3 = thorify(new Web3(), `https://testnet.veblocks.net`);
 // const externalWeb3 = thorify(new Web3(), `http://3.66.229.111:8669`);
-web3 = externalWeb3
+// web3 = externalWeb3
 // Middleware for wallets authentication
 app.use("/send/:to", (req, res, next) => {
   const { auth } = req.body;
