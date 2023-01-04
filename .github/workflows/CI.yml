@@ -9,40 +9,36 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x, 18.x]
-    name: Build with ${{ matrix.node-version }}
+    name: Frontend build with ${{ matrix.node-version }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./frontend
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: "frontend"
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci
-      - run: npm run build
+      - run: cd frontend && npm ci
+      - run: cd frontend && npm run build
 
   build-backend:
     strategy:
       matrix:
         node-version: [16.x, 18.x]
-    name: Build with ${{ matrix.node-version }}
+    name: Backend build with ${{ matrix.node-version }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: "backend"
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci
-      - run: npm run build
+      - run: cd backend && npm ci
+      - run: cd backend && npm run build
