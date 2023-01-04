@@ -46,7 +46,7 @@ const Status = () => {
       VeBlocks finalized block: {status.veblocksFinalizedBlock.number}
       <br />
       Remaining blocks so far:{' '}
-      {status.veblocksBestBlock.number - status.bestBlock.number}
+      {(status.veblocksBestBlock.number || 0) - (status.bestBlock.number || 0)}
       <br />
       <br />
       <br />
