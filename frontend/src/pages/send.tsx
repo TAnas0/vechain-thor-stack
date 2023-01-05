@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { Main } from '@/templates/Main';
@@ -9,7 +10,9 @@ const Send = () => {
   const [from, setFrom] = useState('');
   const [privateKey, setPrivateKey] = useState('');
   const [mnemonicWords, setMnemonicWords] = useState('');
-  const [response, setResponse] = useState({});
+  const [response, setResponse]: [{ transactionHash?: string }, any] = useState(
+    {}
+  );
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -145,8 +148,24 @@ const Send = () => {
         </button>
       </form>
       <div>
-        Response:<br></br>
-        {JSON.stringify(response)}
+        <div>
+          {Object.keys(response).length && (
+            <Link
+              href={
+                `https://explore-testnet.vechain.org/transactions/${response.transactionHash}` ||
+                ''
+              }
+            >
+              See your transaction on Vechain Explorer
+            </Link>
+          )}
+          <br />
+        </div>
+        <div>
+          Response:
+          <br />
+          <pre>{JSON.stringify(response, null, 2)}</pre>
+        </div>
       </div>
     </Main>
   );
