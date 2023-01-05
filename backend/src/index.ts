@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 import { thorify } from "thorify";
 const Web3 = require("web3"); // Recommend using require() instead of import here
@@ -10,20 +10,15 @@ dotenv.config();
 
 const app: Express = express();
 
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-// parse application/json
 app.use(bodyParser.json());
 app.use(cors());
 
 const port = process.env.PORT || 8080;
 const { THOR_ENDPOINT, THOR_PORT } = process.env;
 let web3 = thorify(new Web3(), `http://${THOR_ENDPOINT}:${THOR_PORT}`);
-const externalWeb3 = thorify(new Web3(), `https://testnet.veblocks.net`);
-// const externalWeb3 = thorify(new Web3(), `http://3.66.229.111:8669`);
-// web3 = externalWeb3
-// Middleware for wallets authentication
-app.use("/send/:to", (req, res, next) => {
+
+app.use("/send/:to", (req: Request, res: Response, next: NextFunction) => {
   const { auth } = req.body;
   try {
     const authKeys = Object.keys(auth);
@@ -79,9 +74,8 @@ app.get("/status", async (req: Request, res: Response) => {
 });
 
 app.post("/send/:to", async (req: Request, res: Response) => {
-  // TODO Respond with details about the transaction
-  const { value, data, from } = req.body;
-  const { to } = req.params;
+  const { value, data, from }: { value: number, data: string, from: string } = req.body;
+  const { to }: { to?: string} = req.params;
 
   try {
     const resp = await web3.eth.sendTransaction({
@@ -101,7 +95,7 @@ app.post("/send/:to", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/mnemonictokey", async (req, resp) => {
+app.post("/mnemonictokey", async (req: Request, resp: Response) => {
   const privateKey: Buffer = mnemonic.derivePrivateKey(req.body.words);
   resp.send(privateKey.toString("hex"));
 });
