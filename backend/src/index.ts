@@ -5,6 +5,7 @@ const Web3 = require("web3"); // Recommend using require() instead of import her
 import bodyParser from "body-parser";
 import { mnemonic } from "thor-devkit";
 import cors from "cors";
+import { walletAuth } from "./middlewares";
 
 dotenv.config();
 
@@ -13,43 +14,13 @@ const app: Express = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+app.use("/send/:to", walletAuth);
 
 const port = process.env.PORT || 8080;
 const { THOR_ENDPOINT, THOR_PORT } = process.env;
 let web3 = thorify(new Web3(), `http://${THOR_ENDPOINT}:${THOR_PORT}`);
 
-app.use("/send/:to", (req: Request, res: Response, next: NextFunction) => {
-  const { auth } = req.body;
-  try {
-    const authKeys = Object.keys(auth);
-    if (authKeys.includes("privateKey")) {
-      web3.eth.accounts.wallet.add(auth.privateKey);
-      next();
-    } else if (authKeys.includes("mnemonicWords")) {
-      if (Array.isArray(auth.mnemonicWords)) {
-        const privateKey: Buffer = mnemonic.derivePrivateKey(
-          auth.mnemonicWords
-        );
-        web3.eth.accounts.wallet.add(privateKey.toString("hex"));
-        next();
-      } else {
-        res.status(404).json({
-          error: "Provide mnemonic words as an array",
-        });
-      }
-    } else {
-      res.status(403).json({
-        error: "Authentication details not provided",
-      });
-    }
-  } catch (e) {
-    console.error(e);
-    res.status(401).json({
-      error: "Unexpected error in middleware",
-    });
-  }
-});
-
+// Routes
 app.get("/", (req: Request, res: Response) => {
   res.send("Server working");
 });
@@ -74,8 +45,9 @@ app.get("/status", async (req: Request, res: Response) => {
 });
 
 app.post("/send/:to", async (req: Request, res: Response) => {
-  const { value, data, from }: { value: number, data: string, from: string } = req.body;
-  const { to }: { to?: string} = req.params;
+  const { value, data, from }: { value: number; data: string; from: string } =
+    req.body;
+  const { to }: { to?: string } = req.params;
 
   try {
     const resp = await web3.eth.sendTransaction({
@@ -103,3 +75,5 @@ app.post("/mnemonictokey", async (req: Request, resp: Response) => {
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });
+
+export { web3 };
